@@ -4,11 +4,10 @@ public class Principal {
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
         int opcion;
-        //Conversor conversor;
 
         // Instanciar los conversores una sola vez
-        Conversor conversorMonedas = new ConversorMonedas();
-        Conversor conversorMedidas = new ConversorMedidas();
+        Conversor conversorMonedas = new ConversorMoneda(); // Asegúrate de que el nombre coincida
+        Conversor conversorMedidas = new ConversorMedidas(); // Asegúrate de que el nombre coincida
 
         String menu = """
                 ********** Menú Principal **********
@@ -22,17 +21,16 @@ public class Principal {
         do {
             System.out.println(menu);
             opcion = teclado.nextInt();
+            teclado.nextLine(); // Consumir la nueva línea
 
             switch (opcion) {
                 case 1:
-                    Calculadora.ejecutarCalculadora(teclado);
+                    Calculadora.ejecutarCalculadora(teclado); // Asegúrate de que esta clase exista
                     break;
                 case 2:
-                    //conversor = new ConversorMonedas();
                     conversorMonedas.ejecutarConversor(teclado);
                     break;
                 case 3:
-                    //conversor = new ConvertidorMedidas();
                     conversorMedidas.ejecutarConversor(teclado);
                     break;
                 case 9:
@@ -46,4 +44,5 @@ public class Principal {
         teclado.close();
     }
 }
+
 
