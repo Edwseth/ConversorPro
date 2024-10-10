@@ -2,11 +2,15 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConversorMoneda extends Conversor {
+    private final List<HistorialMoneda> historialConversiones = new ArrayList<>();
     private static final String API_URL = "https://v6.exchangerate-api.com/v6/0f2b3b9cf5405a64c209aa49/latest/";
 
     @Override
@@ -25,6 +29,7 @@ public class ConversorMoneda extends Conversor {
                     String[] monedas = obtenerMonedas(teclado);
                     realizarConversion(monedas[0], monedas[1], teclado);
                 }
+                case 8 -> mostrarHistorial();
                 case 9 -> System.out.println("Regresando al menú principal...");
                 default -> System.out.println("Opción no válida. Intenta de nuevo.");
             }
@@ -43,6 +48,7 @@ public class ConversorMoneda extends Conversor {
                 5. CLP a COP
                 6. CLP a USD
                 7. Ingresar otro par de divisas
+                8. Ver historial de conversiones
                 9. Volver al menú principal
                 ****************************************************
                 """;
@@ -62,13 +68,28 @@ public class ConversorMoneda extends Conversor {
     private void realizarConversion(String baseCurrency, String targetCurrency, Scanner teclado) {
         System.out.print("Ingrese la cantidad a convertir: ");
         double amount = teclado.nextDouble();
-        teclado.nextLine();
+        if (amount <= 0) {
+            System.out.println("La cantidad debe ser un número positivo. Inténtalo de nuevo.");
+            return;
+        }
+        teclado.nextLine(); // Consumir la nueva línea
 
         try {
             double rate = obtenerTasaCambio(baseCurrency, targetCurrency);
             if (rate != -1) {
                 double convertedAmount = amount * rate;
                 System.out.printf("Cantidad convertida: %.2f %s (Tasa de cambio: %.4f %s)\n", convertedAmount, targetCurrency, rate, targetCurrency);
+
+                // Crear un nuevo objeto Historial y agregarlo a la lista
+                HistorialMoneda nuevaConversion = new HistorialMoneda(
+                        baseCurrency,
+                        targetCurrency,
+                        amount,
+                        rate,
+                        convertedAmount,
+                        LocalDateTime.now()
+                );
+                historialConversiones.add(nuevaConversion);
             } else {
                 mostrarMensajeError("No se pudo obtener la tasa de cambio. Verifica las monedas ingresadas o intenta más tarde.");
             }
@@ -109,6 +130,27 @@ public class ConversorMoneda extends Conversor {
             mostrarMensajeError("Error al conectar con la API: " + e.getMessage());
         }
         return -1;
+    }
+
+    private void mostrarHistorial() {
+        if (historialConversiones.isEmpty()) {
+            System.out.println("No hay conversiones registradas en el historial.");
+        } else {
+            System.out.println("********** Historial de Conversiones **********");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+            for (HistorialMoneda conversion : historialConversiones) {
+                System.out.printf(
+                        "Fecha y hora: %s | %s a %s | Cantidad: %.2f | Tasa: %.4f | Resultado: %.2f\n",
+                        conversion.getFechaHora(),
+                        conversion.getMonedaOrigen(),
+                        conversion.getMonedaDestino(),
+                        conversion.getCantidad(),
+                        conversion.getTasaCambio(),
+                        conversion.getResultado()
+                );
+            }
+            System.out.println("***********************************************");
+        }
     }
 
     private void mostrarMensajeError(String mensaje) {
