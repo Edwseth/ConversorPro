@@ -1,3 +1,5 @@
+package com.edwinserrano.Conversorpro.Historial;
+
 import java.time.LocalDateTime;
 
 public class HistorialGeneral {

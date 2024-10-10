@@ -1,6 +1,8 @@
+package com.edwinserrano.Conversorpro.Historial;
+
 import java.time.LocalDateTime;
 
-public class HistorialMoneda extends HistorialGeneral{
+public class HistorialMoneda extends HistorialGeneral {
     private String monedaOrigen;
     private String monedaDestino;
     private double tasaCambio;

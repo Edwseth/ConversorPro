@@ -1,3 +1,5 @@
+package com.edwinserrano.Conversorpro.Respuesta;
+
 import com.google.gson.JsonObject;
 
 public class TasaCambioRespuesta {

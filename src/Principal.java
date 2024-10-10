@@ -1,3 +1,7 @@
+import com.edwinserrano.Conversorpro.Conversores.Conversor;
+import com.edwinserrano.Conversorpro.Conversores.ConversorMedidas;
+import com.edwinserrano.Conversorpro.Conversores.ConversorMoneda;
+
 import java.util.Scanner;
 
 public class Principal {
