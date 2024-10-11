@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-import com.edwinserrano.Conversorpro.Respuesta.TasaCambioRespuesta;
 import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.edwinserrano.Conversorpro.Respuesta;
+package com.edwinserrano.Conversorpro.Conversores;
 
 import com.google.gson.JsonObject;
 
